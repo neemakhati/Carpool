@@ -14,11 +14,15 @@ const LoginScreen = ({ navigation }) => {
             .then(userCredential => {
                 const user = userCredential.user;
                 console.log(`Logged in with: ${user.email}`);
+                navigation.navigate("Profile", {
+                    uid: user.uid
+                });
             })
             .catch(error => {
                 const errorMessage = error.message;
                 console.log(errorMessage);
             })
+        
     }
 
     return <View style={styles.container}>
@@ -26,7 +30,7 @@ const LoginScreen = ({ navigation }) => {
 
         <Text style={{marginTop: 30}}>Email</Text>
         <View style={styles.inputContainer}>
-            <AntDesign style={styles.icon} name="phone" size={22} color="gray" />
+            <MaterialIcons style={styles.icon} name="email" size={22} color="gray" />
             <TextInput
                 style={styles.inputStyle}
                 placeholder='Type your email'
@@ -47,7 +51,7 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity 
                 style={styles.button}
                 onPress={handleLogin}
-                // onPress={() => navigation.navigate('Search')}
+                onPress={() => navigation.navigate('Home')}
                 >
             <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>

@@ -13,8 +13,8 @@ const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const INITIAL_POSITION={
-    latitude: 27.7172,
-    longitude: 85.3240,
+    latitude: 28.3949,
+    longitude: 84.1240,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA
 };
@@ -48,35 +48,10 @@ function InputAutocomplete({
         </>
     );
 }
-const MapScreen = () => {
-    const [location, setLocation] = useState(null);
-    useEffect(() => {
-        (async () => {
-    
-          let {status} = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            console.log('Permission not granted')
-          }
-    
-          const position = await Location.getCurrentPositionAsync();
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
-          })
-          console.log(location);
-        })();
-    }, []);
-
-    if (!location) {
-        return null;
-    }
-
-      
-    
+const MapScreen = ({navigation}) => {    
     const [origin,setOrigin]=useState(null);
     const [destination,setDestination]=useState(null);
+    const [seatNo, setSeatNo] = useState(null);
 
     const [showDirections,setShowDirections]=useState(false);
 
@@ -128,13 +103,7 @@ const MapScreen = () => {
             <MapView
                 useRef={mapRef}
                 style={styles.map}
-                initialRegion={location}
-                showsUserLocation={true}
-                followsUserLocation={true}
             >
-                <Marker
-                    coordinate={location}
-                />
                 {origin&&<Marker coordinate={origin}/>}
                 {destination&&<Marker coordinate={destination}/>}
                 {showDirections&& origin&&destination&&
@@ -154,6 +123,14 @@ const MapScreen = () => {
                 <InputAutocomplete label='Destination' onPlaceSelected={(details)=>{
                     onPlaceSelected(details,"destination")
                 }}/>
+                <Text>Number of Seats: </Text>
+                <TextInput
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    style={styles.inputStyle}
+                    value={seatNo}
+                    onChangeText={value => setSeatNo(value)}
+                />
                 <TouchableOpacity style={styles.button} onPress={trackRoute}>
                     <Text style={styles.buttonText}>Trace Route</Text>
                 </TouchableOpacity>
@@ -163,6 +140,12 @@ const MapScreen = () => {
                         <Text>Duration: {Math.ceil(duration)}mins</Text>
                     </View>
                 ):null}
+                <TouchableOpacity 
+                    style={styles.button}
+                    onPress={() => navigation.navigate('Request')}
+                >
+                    <Text style={styles.buttonText}>Request</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -203,6 +186,12 @@ const styles = StyleSheet.create({
     },
     buttonText:{
         textAlign:"center",
+    },
+    inputStyle: {
+        borderColor:"#888",
+        borderWidth:1,
+        padding:8,
+        borderRadius:8,
     }
 
   });
