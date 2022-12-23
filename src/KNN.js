@@ -1,6 +1,5 @@
 // Define a function to calculate the Euclidean distance between two points
 function euclideanDistance(location1, location2) {
-    // console.log(location1);
     let {lon1, lat1} = location1;
     let {lon2, lat2} = location2;
     lat1 = lat1 * (Math.PI / 180);
@@ -15,7 +14,7 @@ function euclideanDistance(location1, location2) {
   }
   
   // Define a function to perform KNN classification
-  function knn(data, point, k) {
+  export function KNN(data, point, k) {
     // Initialize an array to store the distances between the point and the data
     const distances = [];
   
@@ -49,30 +48,30 @@ function euclideanDistance(location1, location2) {
   }
   
   // Define a sample dataset
-  const data = [
-    {availableSeat: 2, location: {
-        lat2: 84.3487,
-        lon2: 26.7104
-    }},
-    {availableSeat: 4, location: {
-        lat2: 85.3487,
-        lon2: 27.7104
-    }},
-    {availableSeat: 1, location: {
-        lat2: 85.3487,
-        lon2: 27.7104
-    }},
-    {availableSeat: 2, location: {
-        lat2: 83.3487,
-        lon2: 25.7104
-    }},
-  ];
+  // const data = [
+  //   {availableSeat: 2, location: {
+  //       lat2: 84.3487,
+  //       lon2: 26.7104
+  //   }},
+  //   {availableSeat: 4, location: {
+  //       lat2: 85.3487,
+  //       lon2: 27.7104
+  //   }},
+  //   {availableSeat: 1, location: {
+  //       lat2: 85.3487,
+  //       lon2: 27.7104
+  //   }},
+  //   {availableSeat: 2, location: {
+  //       lat2: 83.3487,
+  //       lon2: 25.7104
+  //   }},
+  // ];
   
   // Find the 3 nearest neighbors of the point {age: 30, dimensions: [180, 80, 33]}
-  const nearestNeighbors = knn(data, {requiredSeat: 1, location: {
-    lat1: 27,
-    lon1: 81
-  }}, 3);
+  // const nearestNeighbors = knn(data, {requiredSeat: 1, location: {
+  //   lat1: 27,
+  //   lon1: 81
+  // }}, 3);
   
   // Print the nearest neighbors
-  console.log(nearestNeighbors);
+  // console.log(nearestNeighbors);

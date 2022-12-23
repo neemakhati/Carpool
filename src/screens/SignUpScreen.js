@@ -5,12 +5,26 @@ import { database } from '../../firebase';
 import { collection, doc , setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "../../firebase";
+import RadioGroup from 'react-native-radio-buttons-group';
 
-const SingUpScreen = ({ navigation }) => {
+const SignUpScreen = ({ navigation }) => {
+    const [radioButtons, setRadioButtons] = useState([
+        {
+            id: '1',
+            label: 'Driver',
+            value: 'driver'
+        },
+        {
+            id: '2',
+            label: 'Passenger',
+            value: 'passenger'
+        }
+    ]);
     const [data, setData] = useState({
         name: '',
         email: '',
         phone: '',
+        role: '',
         password: '',
         confirmPassword: '',
     });
@@ -70,6 +84,20 @@ const SingUpScreen = ({ navigation }) => {
                 onChangeText={value => {setData(prev => ({...prev, phone: value}))}}
             />
         </View>
+
+        <Text style={{marginTop: 10}}>Select your role</Text>
+        <RadioGroup
+            radioButtons={radioButtons}
+            onPress={(radioButtonsArray) => {
+                setRadioButtons(radioButtonsArray);
+                radioButtonsArray.forEach(item => {
+                    if (item.selected) {
+                        setData(prev => ({...prev, role: item.value}))
+                    }
+                })
+            }}
+            layout='row'
+        />
 
         <Text style={{marginTop: 10}}>Password</Text>
         <View style={styles.inputContainer}>
@@ -161,4 +189,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SingUpScreen;
+export default SignUpScreen;

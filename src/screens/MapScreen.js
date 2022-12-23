@@ -12,12 +12,12 @@ const ASPECT_RATIO = width/height;
 const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const INITIAL_POSITION={
-    latitude: 28.3949,
-    longitude: 84.1240,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-};
+// const INITIAL_POSITION={
+//     latitude: 28.3949,
+//     longitude: 84.1240,
+//     latitudeDelta: LATITUDE_DELTA,
+//     longitudeDelta: LONGITUDE_DELTA
+// };
 
 type InputAutocompleteProps ={
     label:string;
@@ -48,7 +48,8 @@ function InputAutocomplete({
         </>
     );
 }
-const MapScreen = ({navigation}) => {    
+const MapScreen = ({navigation}) => { 
+    
     const [origin,setOrigin]=useState(null);
     const [destination,setDestination]=useState(null);
     const [seatNo, setSeatNo] = useState(null);

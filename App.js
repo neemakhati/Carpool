@@ -17,7 +17,7 @@ const navigator = createStackNavigator(
     Request: RequestScreen,
   },
   {
-    initialRouteName: 'Map',
+    initialRouteName: 'SignUp',
     defaultNavigationOptions: {
       headerShown:false,
       cardStyle: { backgroundColor: '#FFFFFF' }
