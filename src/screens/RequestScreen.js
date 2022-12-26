@@ -15,52 +15,35 @@ export default function RequestScreen(){
     useEffect(() => {
         setData([]);
 
-        (async () => {
-            // const carQuery = query(collection(database, "car_db"));
-            // const carSnapshot = await getDocs(carQuery);
-    
-            // carSnapshot.forEach((car) => {
-            //     setData(prev => [
-            //         ...prev,
-            //         {
-            //             car_num: car.data().car_num,
-            //             id: car.id,
-            //             car_seat: car.data().car_seat,
-            //             driver_latitude: car.data().driver_latitude,
-            //             driver_longitude: car.data().driver_longitude,
-            //             driver_name: car.data().driver_name
-            //         }
-            //     ])
-            // })
-            const carQuery = query(collection(database, "car_db"));
-            const carSnapshot = await getDocs(carQuery);
-            setSnapSize(carSnapshot.size);
-
-            carSnapshot.forEach((car) => {
-                setLocations(prev => [
-                    ...prev,
-                    {
-                        availableSeat: car.data().car_seat,
-                        location: {
-                            lat2: car.data().driver_latitude,
-                            lon2: car.data().driver_longitude,
-                        }
+        async function getData() {
+            const myArrary = [];
+            const carSnapshot = await getDocs(query(collection(database, "car_db")));
+            carSnapshot.forEach(car => {
+                myArrary.push({
+                    availableSeat: car.data().car_seat,
+                    location: {
+                        lat2: car.data().driver_latitude,
+                        lon2: car.data().driver_longitude
                     }
-                ])
+                });
+            });
+            return myArrary;
+        }
+
+        getData()
+            .then(data => {
+                const nearestNeighbors = KNN(data, {
+                        requiredSeat: 2,
+                        location: {
+                            lat1: 27.7172,
+                            lon1: 85.3240
+                        }
+                    }, 1);
+                console.log(nearestNeighbors);
             })
-        })();
     }, []);
 
-    if (locations.length != snapSize) return null;
-
-    const nearestNeighbors = KNN(locations, {
-        requiredSeat: 2,
-        location: {
-            lat1: 27,
-            lon1: 81
-        }
-    }, 1);
-    console.log(nearestNeighbors);
+    
 
     return(
         <View style={styles.container}>

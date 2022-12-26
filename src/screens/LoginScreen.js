@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { signInWithEmailAndPassword } from 'firebase/auth/react-native';
-import { auth } from '../../firebase';
+import { auth, database } from '../../firebase';
+import { query } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 
 const LoginScreen = ({ navigation }) => {
@@ -14,9 +16,19 @@ const LoginScreen = ({ navigation }) => {
             .then(userCredential => {
                 const user = userCredential.user;
                 console.log(`Logged in with: ${user.email}`);
-                navigation.navigate("Profile", {
-                    uid: user.uid
-                });
+                
+                const uid = user.uid;
+                (async() => {
+                    const docRef = doc(database, 'users', uid);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.data().role === 'driver') {
+                        navigation.navigate('Home');
+                    }
+                    else if(docSnap.data().role === 'passenger') {
+                        navigation.navigate('Map');
+                    }
+                })();
+                
             })
             .catch(error => {
                 const errorMessage = error.message;
@@ -51,8 +63,8 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity 
                 style={styles.button}
                 onPress={handleLogin}
-                onPress={() => navigation.navigate('Home')}
-                >
+                // onPress={() => navigation.navigate('Home')}
+        >
             <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
         <View style={{alignItems: 'center', marginTop: 80}}>

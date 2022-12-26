@@ -32,7 +32,7 @@ function euclideanDistance(location1, location2) {
     }
   
     // Sort the distances array in ascending order by distance and age gap
-    distances.sort((a, b) => a.remainingSeat - b.remainingSeat ||  a.distance - b.distance);
+    distances.sort((a, b) => a.distance - b.distance || a.remainingSeat - b.remainingSeat );
   
     // Initialize an array to store the K nearest neighbors
     const neighbors = [];
