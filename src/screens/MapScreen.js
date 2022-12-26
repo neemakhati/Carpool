@@ -3,7 +3,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import MapView, { PROVIDER_GOOGLE, LatLng, Marker, Callout, Circle} from 'react-native-maps';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Dimensions} from 'react-native';
 import MapViewDirections from 'react-native-maps-directions';
-
 import * as Location from 'expo-location';
 import { useRef } from 'react';
 
@@ -11,13 +10,6 @@ const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width/height;
 const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
-// const INITIAL_POSITION={
-//     latitude: 28.3949,
-//     longitude: 84.1240,
-//     latitudeDelta: LATITUDE_DELTA,
-//     longitudeDelta: LONGITUDE_DELTA
-// };
 
 type InputAutocompleteProps ={
     label:string;
@@ -49,6 +41,24 @@ function InputAutocomplete({
     );
 }
 const MapScreen = ({navigation}) => { 
+    const [location, setLocation] = useState(null);
+    useEffect(() => {
+        (async () => {
+    
+          let {status} = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            console.log('Permission not granted')
+          }
+    
+          const position = await Location.getCurrentPositionAsync();
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+          })
+        })();
+      }, [])
     
     const [origin,setOrigin]=useState(null);
     const [destination,setDestination]=useState(null);
@@ -58,6 +68,10 @@ const MapScreen = ({navigation}) => {
 
     const [distance,setDistance]=useState(0);
     const [duration,setDuration]=useState(0);
+
+    if (!location) {
+        return null;
+    }
 
     const mapRef=useRef<MapView>(null)
     const moveTo=async(position:LatLng)=>{
@@ -82,9 +96,9 @@ const MapScreen = ({navigation}) => {
         }
     }
     const trackRoute=()=>{
-        if(origin&&destination){
+        if(location&&destination){
             setShowDirections(true);
-            mapRef.current?.fitToCoordinates([origin,destination],{edgePadding});
+            mapRef.current?.fitToCoordinates([location,destination],{edgePadding});
         }
     }
     const onPlaceSelected=(
@@ -94,28 +108,47 @@ const MapScreen = ({navigation}) => {
         const set=flag==="origin"?setOrigin:setDestination
         const position={
             latitude:details?.geometry.location.lat || 0,
-            longitude:details?.geometry.location.lng || 0
+            longitude:details?.geometry.location.lng || 0,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
         }
         set(position);
         moveTo(position);
     };
+
     return(
         <View style={styles.container}>
             <MapView
                 useRef={mapRef}
                 style={styles.map}
+                showsUserLocation={true}
+                region={origin ? origin : location}
+                followsUserLocation={true}
             >
-                {origin&&<Marker coordinate={origin}/>}
+                {origin ? <Marker coordinate={origin}/> : <Marker coordinate={location} />}
                 {destination&&<Marker coordinate={destination}/>}
-                {showDirections&& origin&&destination&&
+                {showDirections && (location&&destination || origin&&destination )&&
                 (<MapViewDirections
-                    origin={origin}
+                    origin={origin ? origin : location}
                     destination={destination}
                     apikey='AIzaSyAsB0o_NDhsStJEq1JBTEcAcrhiCgwMCh4'
                     strokeColor='#6644ff'
                     strokeWidth={4}
                     onReady={traceRouteOnReady}
                 />)}
+                {!origin && 
+                    <Marker 
+                        coordinate={location} 
+                        draggable
+                        onDragEnd={({nativeEvent}) => {
+                            setLocation(prev => ({
+                            ...prev,
+                            latitude: nativeEvent.coordinate.latitude,
+                            longitude: nativeEvent.coordinate.longitude
+                            }))
+                    }}
+                />
+                }
             </MapView>
             <View style={styles.searchContainer}>
                 <InputAutocomplete label='Origin' onPlaceSelected={(details)=>{
