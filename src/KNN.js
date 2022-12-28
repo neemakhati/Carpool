@@ -22,7 +22,6 @@ function euclideanDistance(location1, location2) {
     for (let i = 0; i < data.length; i++) {
       // Calculate the distance between the point and the current data point
       const distance = euclideanDistance(point.location, data[i].location);
-      console.log(distance);
   
       // Calculate the age gap between the point and the current data point
       const remainingSeat = Math.abs(point.requiredSeat - data[i].availableSeat);
@@ -40,7 +39,6 @@ function euclideanDistance(location1, location2) {
     // Iterate over the first K elements of the distances array and add the corresponding data points to the neighbors array
     for (let i = 0; i < k; i++) {
       neighbors.push(data[distances[i].index]);
-    // console.log(data[distances[i].index]);
     }
   
     // Return the neighbors array

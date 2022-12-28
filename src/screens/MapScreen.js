@@ -5,6 +5,8 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Dimensions} from '
 import MapViewDirections from 'react-native-maps-directions';
 import * as Location from 'expo-location';
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import store from '../store';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width/height;
@@ -41,6 +43,8 @@ function InputAutocomplete({
     );
 }
 const MapScreen = ({navigation}) => { 
+    const dispatch = useDispatch();
+    
     const [location, setLocation] = useState(null);
     useEffect(() => {
         (async () => {
@@ -176,7 +180,16 @@ const MapScreen = ({navigation}) => {
                 ):null}
                 <TouchableOpacity 
                     style={styles.button}
-                    onPress={() => navigation.navigate('Request')}
+                    onPress={() => {
+                        dispatch({type: 'requiredSeat', payload: seatNo});
+                        if (origin) {
+                            dispatch({type: 'location', payload: origin});
+                        }
+                        else if (location) {
+                            dispatch({type: 'location', payload: location});
+                        }
+                        navigation.navigate('Request');
+                    }}
                 >
                     <Text style={styles.buttonText}>Request</Text>
                 </TouchableOpacity>

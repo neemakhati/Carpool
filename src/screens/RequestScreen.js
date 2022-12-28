@@ -6,8 +6,13 @@ import DriverDetail from '../components/DriverDetail';
 import { useState, useEffect } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { KNN } from '../KNN';
+import store from '../store';
+import { useSelector } from 'react-redux';
 
 export default function RequestScreen(){
+    const requiredSeat = useSelector(state => state.requiredSeat);
+    const location = useSelector(state => state.location);
+
     const [data, setData] = useState([]);
     const [locations, setLocations] = useState([]);
     const [snapSize, setSnapSize] = useState(0);
@@ -24,7 +29,9 @@ export default function RequestScreen(){
                     location: {
                         lat2: car.data().driver_latitude,
                         lon2: car.data().driver_longitude
-                    }
+                    },
+                    driver_name: car.data().driver_name,
+                    car_num: car.data().car_num
                 });
             });
             return myArrary;
@@ -33,13 +40,13 @@ export default function RequestScreen(){
         getData()
             .then(data => {
                 const nearestNeighbors = KNN(data, {
-                        requiredSeat: 2,
+                        requiredSeat: requiredSeat,
                         location: {
-                            lat1: 27.7172,
-                            lon1: 85.3240
+                            lat1: location.latitude,
+                            lon1: location.longitude
                         }
-                    }, 1);
-                console.log(nearestNeighbors);
+                    }, 3);
+                setData(nearestNeighbors);
             })
     }, []);
 
@@ -49,7 +56,7 @@ export default function RequestScreen(){
         <View style={styles.container}>
             <FlatList
                 data={data}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.car_num}
                 renderItem={({item}) => {
                     return (
                         <DriverDetail 
