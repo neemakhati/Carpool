@@ -31,7 +31,8 @@ export default function RequestScreen(){
                         lon2: car.data().driver_longitude
                     },
                     driver_name: car.data().driver_name,
-                    car_num: car.data().car_num
+                    car_num: car.data().car_num,
+                    distance: 0
                 });
             });
             return myArrary;
@@ -47,6 +48,7 @@ export default function RequestScreen(){
                         }
                     }, 3);
                 setData(nearestNeighbors);
+                console.log(nearestNeighbors);
             })
     }, []);
 
@@ -62,6 +64,8 @@ export default function RequestScreen(){
                         <DriverDetail 
                             driver_name={item.driver_name}
                             car_num = {item.car_num}
+                            distance = {item.distance}
+                            availableSeat = {item.availableSeat}
                         />
                     )
                 }}

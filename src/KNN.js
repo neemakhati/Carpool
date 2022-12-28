@@ -22,6 +22,8 @@ function euclideanDistance(location1, location2) {
     for (let i = 0; i < data.length; i++) {
       // Calculate the distance between the point and the current data point
       const distance = euclideanDistance(point.location, data[i].location);
+
+      data[i].distance = Number(distance.toFixed(2));
   
       // Calculate the age gap between the point and the current data point
       const remainingSeat = Math.abs(point.requiredSeat - data[i].availableSeat);
@@ -44,32 +46,3 @@ function euclideanDistance(location1, location2) {
     // Return the neighbors array
     return neighbors;
   }
-  
-  // Define a sample dataset
-  // const data = [
-  //   {availableSeat: 2, location: {
-  //       lat2: 84.3487,
-  //       lon2: 26.7104
-  //   }},
-  //   {availableSeat: 4, location: {
-  //       lat2: 85.3487,
-  //       lon2: 27.7104
-  //   }},
-  //   {availableSeat: 1, location: {
-  //       lat2: 85.3487,
-  //       lon2: 27.7104
-  //   }},
-  //   {availableSeat: 2, location: {
-  //       lat2: 83.3487,
-  //       lon2: 25.7104
-  //   }},
-  // ];
-  
-  // Find the 3 nearest neighbors of the point {age: 30, dimensions: [180, 80, 33]}
-  // const nearestNeighbors = knn(data, {requiredSeat: 1, location: {
-  //   lat1: 27,
-  //   lon1: 81
-  // }}, 3);
-  
-  // Print the nearest neighbors
-  // console.log(nearestNeighbors);

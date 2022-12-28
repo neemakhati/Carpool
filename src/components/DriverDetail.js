@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-export default function DriverDetail({ driver_name, car_num }){
+export default function DriverDetail({ driver_name, car_num, distance, availableSeat }){
     return(
         <View style={styles.cardStyle}>
             <View style={styles.container}>
@@ -9,6 +9,8 @@ export default function DriverDetail({ driver_name, car_num }){
                 <View style={{justifyContent: 'center'}}>
                     <Text>Name: {driver_name}</Text>
                     <Text>Car Plate: {car_num}</Text>
+                    <Text>Distance: {distance} Km</Text>
+                    <Text>Available Seats: {availableSeat}</Text>
                 </View>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
