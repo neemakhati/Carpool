@@ -9,16 +9,16 @@ import { KNN } from '../KNN';
 import store from '../store';
 import { useSelector } from 'react-redux';
 
-export default function RequestScreen(){
+export default function RequestScreen({navigation}){
     const requiredSeat = useSelector(state => state.requiredSeat);
     const location = useSelector(state => state.location);
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
     const [locations, setLocations] = useState([]);
     const [snapSize, setSnapSize] = useState(0);
 
     useEffect(() => {
-        setData([]);
+        setData(null);
 
         async function getData() {
             const myArrary = [];
@@ -52,6 +52,11 @@ export default function RequestScreen(){
             })
     }, []);
 
+    const deleteItem = (index) => {
+        const newData =[...data];
+        newData.splice(index, 1);
+        setData(newData);
+    }
     
 
     return(
@@ -59,18 +64,22 @@ export default function RequestScreen(){
             <FlatList
                 data={data}
                 keyExtractor={item => item.car_num}
-                renderItem={({item}) => {
+                renderItem={({item, index}) => {
                     return (
                         <DriverDetail 
                             driver_name={item.driver_name}
                             car_num = {item.car_num}
                             distance = {item.distance}
                             availableSeat = {item.availableSeat}
+                            deleteItem = {deleteItem}
+                            index={index}
+                            navigation={navigation}
                         />
                     )
                 }}
                 showsVerticalScrollIndicator={false}
             />
+            {data != null && data?.length == 0 ? <Text>You are out of options</Text> : null}
         </View>
     );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-export default function DriverDetail({ driver_name, car_num, distance, availableSeat }){
+export default function DriverDetail({ driver_name, car_num, distance, availableSeat, deleteItem, index, navigation }){
     return(
         <View style={styles.cardStyle}>
             <View style={styles.container}>
@@ -16,6 +16,7 @@ export default function DriverDetail({ driver_name, car_num, distance, available
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                 <TouchableOpacity 
                     style={styles.button}
+                    onPress={() => navigation.navigate('Accept')}
                 >
                     <Text style={styles.buttonText}>ACCEPT</Text>
                 </TouchableOpacity>
@@ -23,6 +24,7 @@ export default function DriverDetail({ driver_name, car_num, distance, available
                 <TouchableOpacity 
                     style={{color: 'white', backgroundColor: 'rgb(227, 57, 62)', borderRadius: 17,
                     padding: 7, marginBottom: 10, width: '45%'}}
+                    onPress={() => deleteItem(index)}
                 >
                     <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center', fontSize: 15,}}>REJECT</Text>
                 </TouchableOpacity>
