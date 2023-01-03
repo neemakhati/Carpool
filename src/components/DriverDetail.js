@@ -1,7 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
 
 export default function DriverDetail({ driver_name, car_num, distance, availableSeat, deleteItem, index, navigation }){
+    const dispatch = useDispatch();
+
     return(
         <View style={styles.cardStyle}>
             <View style={styles.container}>
@@ -16,7 +19,14 @@ export default function DriverDetail({ driver_name, car_num, distance, available
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                 <TouchableOpacity 
                     style={styles.button}
-                    onPress={() => navigation.navigate('Accept')}
+                    onPress={() => {
+                        dispatch({type: 'info', payload: {
+                            name: driver_name,
+                            car_num: car_num
+                        }})
+                        navigation.navigate('Accept')
+                    }}
+
                 >
                     <Text style={styles.buttonText}>ACCEPT</Text>
                 </TouchableOpacity>
@@ -47,7 +57,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 20,
         width: 350,
-        backgroundColor: 'rgb(153, 240, 240)'
+        backgroundColor: '#bbb'
     },
     button: {
         color: 'white',

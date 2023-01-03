@@ -22,7 +22,6 @@ function euclideanDistance(location1, location2) {
     for (let i = 0; i < data.length; i++) {
       // Calculate the distance between the point and the current data point
       const distance = euclideanDistance(point.location, data[i].location);
-
       data[i].distance = Number(distance.toFixed(2));
   
       // Calculate the age gap between the point and the current data point

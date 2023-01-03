@@ -149,7 +149,7 @@ const MapScreen = ({navigation}) => {
                             ...prev,
                             latitude: nativeEvent.coordinate.latitude,
                             longitude: nativeEvent.coordinate.longitude
-                            }))
+                        }))
                     }}
                 />
                 }
