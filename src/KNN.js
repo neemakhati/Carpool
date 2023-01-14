@@ -24,14 +24,14 @@ function euclideanDistance(location1, location2) {
       const distance = euclideanDistance(point.location, data[i].location);
       data[i].distance = Number(distance.toFixed(2));
   
-      // Calculate the age gap between the point and the current data point
+      // Calculate the seat gap between the point and the current data point
       const remainingSeat = Math.abs(point.requiredSeat - data[i].availableSeat);
   
-      // Add the distance, age gap, and index of the data point to the distances array
+      // Add the distance, seat gap, and index of the data point to the distances array
       distances.push({distance, remainingSeat, index: i});
     }
   
-    // Sort the distances array in ascending order by distance and age gap
+    // Sort the distances array in ascending order by distance and seat gap
     distances.sort((a, b) => a.distance - b.distance || a.remainingSeat - b.remainingSeat );
   
     // Initialize an array to store the K nearest neighbors

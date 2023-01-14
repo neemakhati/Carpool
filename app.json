@@ -21,13 +21,23 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.neema.khati.CarPooling"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7709e40d-89a5-4b83-9a14-9154f0cb086b"
+      }
+    },
+    "plugins" : [
+      "@react-native-firebase/app"
+    ]
   }
 }
