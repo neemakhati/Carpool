@@ -6,6 +6,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { KNN } from '../KNN';
 import store from '../store';
 import { useSelector } from 'react-redux';
+import firestore from '@react-native-firebase/firestore'; 
 
 export default function RequestScreen({navigation}){
     const requiredSeat = useSelector(state => state.requiredSeat);
@@ -18,7 +19,7 @@ export default function RequestScreen({navigation}){
     useEffect(() => {
         async function getData() {
             const myArrary = [];
-            const carSnapshot = await getDocs(query(collection(database, "car_db")));
+            const carSnapshot = await firestore().collection('car_db').get();
             carSnapshot.forEach(car => {
                 myArrary.push({
                     availableSeat: car.data().car_seat,

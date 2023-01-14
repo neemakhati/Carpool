@@ -7,6 +7,7 @@ import * as Location from 'expo-location';
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import store from '../store';
+import firestore from '@react-native-firebase/firestore'; 
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width/height;
@@ -93,6 +94,24 @@ const MapScreen = ({navigation}) => {
         buttom:edgePaddingValue,
         left:edgePaddingValue,
     };
+
+    const sendNoti = ()=>{
+        firestore().collection('users').get().then(querySnap=>{
+            const userDevicetoken = querySnap.docs.map(docSnap=>{
+                return docSnap.data().token
+            })
+            console.log(userDevicetoken)
+            fetch('https://0d47-103-181-227-231.ngrok.io/send-noti',{
+                method:'post',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    tokens: userDevicetoken
+                })
+            })
+        })
+    }
     const traceRouteOnReady=(args)=>{
         if(args){
             setDistance(args.distance);
@@ -118,6 +137,8 @@ const MapScreen = ({navigation}) => {
         }
         set(position);
         moveTo(position);
+
+
     };
 
     return(
@@ -189,8 +210,10 @@ const MapScreen = ({navigation}) => {
                             dispatch({type: 'location', payload: location});
                         }
                         navigation.navigate('Request');
+                        sendNoti()
                     }}
                 >
+                    
                     <Text style={styles.buttonText}>Request</Text>
                 </TouchableOpacity>
             </View>

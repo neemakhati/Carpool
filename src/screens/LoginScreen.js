@@ -17,21 +17,30 @@ const LoginScreen = ({ navigation }) => {
                 console.log(`Logged in with: ${user.email}`);
 
                 const uid = user.uid;
+
+                messaging().getToken().then(token => {  
+                    firestore()
+                        .collection('users')
+                        .doc(uid)
+                        .update({
+                            token: token
+                        })
+                  });
                 
                 firestore()
-                .collection('users')
-                .where('uid', '==', uid)
-                .get()
-                .then(querySnapshot => {
-                    const dataArr = querySnapshot.docs.map((item) => {
-                        if (item.data().role === 'driver') {
-                            navigation.navigate('Home');
-                        }
-                        else if(item.data().role === 'passenger') {
-                            navigation.navigate('Map');
-                        }
+                    .collection('users')
+                    .where('uid', '==', uid)
+                    .get()
+                    .then(querySnapshot => {
+                        const dataArr = querySnapshot.docs.map((item) => {
+                            if (item.data().role === 'driver') {
+                                navigation.navigate('Home');
+                            }
+                            else if(item.data().role === 'passenger') {
+                                navigation.navigate('Map');
+                            }
+                        })
                     })
-                })
             })
             .catch(error => {
                 const errorMessage = error.message;

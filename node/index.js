@@ -12,21 +12,20 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-app.post('/send-notification', (req, res) => {
-    console.log(req.body)
-    // const message={
-    //     notification:{
-    //         title:"New Add",
-    //         body:"new add click to open"
-    //     },
-    //     token:'e1ZwkX6hRRWvoRg335qf17:APA91bFu1ZlD6kdC_inU6qlygA5xnybpPserAywogiDhtXvgfVlAQAIXS50IABHOZgWPdkBsAW3tt1DtGhtg1X1RR1GvOI_9KwX5A3Ic7LS57nOgu43VOvy9W95LCombJlsFejWjiOOR'
-    // }
+app.post('/send-noti', (req, res) => {
+    const message={
+        notification:{
+            title:"New Add",
+            body:"new add click to open"
+        },
+        tokens:req.body.tokens
+    }
     
-    // admin.messaging().send(message).then(res=>{
-    //     console.log("send success");
-    // }).catch(err=>{
-    //     console.log(err)
-    // })
+    admin.messaging().sendMulticast(message).then(res=>{
+        console.log("send success");
+    }).catch(err=>{
+        console.log(err)
+    })
 })
 
 
