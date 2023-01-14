@@ -1,13 +1,12 @@
 import React,{useState} from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { FontAwesome5, MaterialIcons, AntDesign } from '@expo/vector-icons';
-import { database } from '../../firebase';
-import { collection, doc , setDoc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../../firebase";
 import RadioGroup from 'react-native-radio-buttons-group';
 import { KeyboardAvoidingView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import messaging from '@react-native-firebase/messaging';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const SignUpScreen = ({ navigation }) => {
     const [radioButtons, setRadioButtons] = useState([
@@ -31,23 +30,22 @@ const SignUpScreen = ({ navigation }) => {
         confirmPassword: '',
     });
 
-    const collectionRef = collection(database, 'users');
-
     const handleSignUp = () => {
-        createUserWithEmailAndPassword(auth, data.email, data.password)
-            .then(userCredential => {
+        auth()
+            .createUserWithEmailAndPassword(data.email, data.password)
+            .then((userCredential) => {
                 const user = userCredential.user;
-                console.log("User created with: " + user.email);
+                console.log('User created with: ' + user.email);
 
-                setDoc(doc(database, "users", user.uid), {
-                    ...data,
-                    uid: user.uid
+                firestore()
+                    .collection('users')
+                    .doc(user.uid)
+                    .set({
+                        ...data,
+                        uid: user.uid
+                    })
                 })
-                .then(() => console.log('Data Added'))
-                .catch(err => console.log(err.message))
-            })
-            .catch(err => console.log(err.message));
-            navigation.navigate("Login");
+                navigation.navigate("Login");
     }
 
     return (

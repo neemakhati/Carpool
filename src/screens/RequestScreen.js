@@ -1,7 +1,5 @@
 import React from 'react';
 import {Text,View, StyleSheet} from 'react-native';
-import { query, where, collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import { database } from '../../firebase';
 import DriverDetail from '../components/DriverDetail';
 import { useState, useEffect } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
@@ -18,8 +16,6 @@ export default function RequestScreen({navigation}){
     const [snapSize, setSnapSize] = useState(0);
 
     useEffect(() => {
-        setData(null);
-
         async function getData() {
             const myArrary = [];
             const carSnapshot = await getDocs(query(collection(database, "car_db")));

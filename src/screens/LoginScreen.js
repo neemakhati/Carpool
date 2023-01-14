@@ -1,39 +1,43 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import { signInWithEmailAndPassword } from 'firebase/auth/react-native';
-import { auth, database } from '../../firebase';
-import { query } from 'firebase/firestore';
-import { doc, getDoc } from 'firebase/firestore';
-
+import messaging from '@react-native-firebase/messaging';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => { 
-        signInWithEmailAndPassword(auth, email, password)
+        auth()
+            .signInWithEmailAndPassword(email, password)
             .then(userCredential => {
                 const user = userCredential.user;
                 console.log(`Logged in with: ${user.email}`);
-                
+
                 const uid = user.uid;
-                (async() => {
-                    const docRef = doc(database, 'users', uid);
-                    const docSnap = await getDoc(docRef);
-                    if (docSnap.data().role === 'driver') {
-                        navigation.navigate('Home');
-                    }
-                    else if(docSnap.data().role === 'passenger') {
-                        navigation.navigate('Map');
-                    }
-                })();
                 
+                firestore()
+                .collection('users')
+                .where('uid', '==', uid)
+                .get()
+                .then(querySnapshot => {
+                    const dataArr = querySnapshot.docs.map((item) => {
+                        if (item.data().role === 'driver') {
+                            navigation.navigate('Home');
+                        }
+                        else if(item.data().role === 'passenger') {
+                            navigation.navigate('Map');
+                        }
+                    })
+                })
             })
             .catch(error => {
                 const errorMessage = error.message;
                 console.log(errorMessage);
             })
+            
         
     }
 
