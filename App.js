@@ -17,7 +17,7 @@ import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 import SignUpDriver from './src/screens/SignUpDriver';
-// import NotificationScreen from './src/screens/NotificationScreen';
+import NotificationScreen from './src/screens/NotificationScreen';
 
 
 const Stack = createStackNavigator();
@@ -44,7 +44,7 @@ const StackNavigator = () => {
 }
 
 export default function App() {
-  // const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
@@ -85,7 +85,9 @@ export default function App() {
     });
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      setShowNotification(true);
+
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
     return unsubscribe;
@@ -97,6 +99,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <StackNavigator />
+        { showNotification && <NotificationScreen/> }
       </NavigationContainer>
     </Provider>
   )
