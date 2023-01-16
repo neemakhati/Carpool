@@ -25,6 +25,7 @@ const SignUpScreen = ({ navigation }) => {
         name: '',
         email: '',
         phone: '',
+        num: '',
         password: '',
         confirmPassword: '',
     });
@@ -37,11 +38,12 @@ const SignUpScreen = ({ navigation }) => {
                 console.log('User created with: ' + user.email);
 
                 firestore()
-                    .collection('users')
+                    .collection('car_db')
                     .doc(user.uid)
                     .set({
                         ...data,
                         uid: user.uid,
+                        seats: 4,
                     })
                 })
                 navigation.navigate("Login");
@@ -84,6 +86,19 @@ const SignUpScreen = ({ navigation }) => {
                         placeholder='Type your phone'
                         value={data.phone}
                         onChangeText={value => {setData(prev => ({...prev, phone: value}))}}
+                    />
+                </View>
+
+                
+                <Text style={{marginTop: 10}}>Car Number</Text>
+                <View style={styles.inputContainer}>
+                    <AntDesign style={styles.icon} name="car" size={22} color="gray" />
+                    <TextInput
+                        style={styles.inputStyle}
+                        placeholder='Type your car number'
+                        isPassword={true}
+                        value={data.num}
+                        onChangeText={value => {setData(prev => ({...prev, num: value}))}}
                     />
                 </View>
 
@@ -140,7 +155,6 @@ const styles = StyleSheet.create({
         marginRight: 'auto',
         marginTop: 'auto',
         marginBottom: 'auto',
-        paddingVertical: 30,
         height: '75%',
         width: '80%',
     },

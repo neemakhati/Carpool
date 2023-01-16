@@ -16,6 +16,7 @@ import { async } from '@firebase/util';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
+import SignUpDriver from './src/screens/SignUpDriver';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Profile" component={ProfileInfoScreen} />
       <Stack.Screen name="Request" component={RequestScreen} />
       <Stack.Screen name="Accept" component={AcceptScreen} />
+      <Stack.Screen name="SignUpDriver" component={SignUpDriver} />
     </Stack.Navigator>
   )
 }

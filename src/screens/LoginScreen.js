@@ -17,30 +17,32 @@ const LoginScreen = ({ navigation }) => {
                 console.log(`Logged in with: ${user.email}`);
 
                 const uid = user.uid;
-
-                messaging().getToken().then(token => {  
-                    firestore()
-                        .collection('users')
-                        .doc(uid)
-                        .update({
-                            token: token
-                        })
-                  });
-                
-                firestore()
-                    .collection('users')
-                    .where('uid', '==', uid)
-                    .get()
-                    .then(querySnapshot => {
-                        const dataArr = querySnapshot.docs.map((item) => {
-                            if (item.data().role === 'driver') {
-                                navigation.navigate('Home');
-                            }
-                            else if(item.data().role === 'passenger') {
-                                navigation.navigate('Map');
-                            }
-                        })
-                    })
+                  (async () => {
+                    const querySnapshot = await firestore().collection('users').doc(uid).get();
+                      console.log(querySnapshot);
+                        if (querySnapshot.exists) {
+                            messaging().getToken().then(token => {  
+                                    firestore()
+                                        .collection('users')
+                                        .doc(uid)
+                                        .update({
+                                            token: token
+                                        })
+                                  }); 
+                            navigation.navigate('Map');
+                        } else {
+                            messaging().getToken().then(token => {  
+                                firestore()
+                                    .collection('car_db')
+                                    .doc(uid)
+                                    .update({
+                                        token: token
+                                    })
+                              }); 
+                        navigation.navigate('Home');
+                        }
+                  })();
+    
             })
             .catch(error => {
                 const errorMessage = error.message;
@@ -76,7 +78,6 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity 
                 style={styles.button}
                 onPress={handleLogin}
-                // onPress={() => navigation.navigate('Home')}
         >
             <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
@@ -86,7 +87,14 @@ const LoginScreen = ({ navigation }) => {
                 style={{marginTop: 10}}
                 onPress={() => navigation.navigate('SignUp')}
             >
-                <Text style={styles.signUp}>SIGN UP</Text>
+                <Text style={styles.signUp}>SIGN UP as Passenger</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+                style={{marginTop: 10}}
+                onPress={() => navigation.navigate('SignUpDriver')}
+            >
+                <Text style={styles.signUp}>SIGN UP as Driver</Text>
             </TouchableOpacity>
         </View>
     </View>

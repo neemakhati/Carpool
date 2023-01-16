@@ -101,7 +101,7 @@ const MapScreen = ({navigation}) => {
                 return docSnap.data().token
             })
             console.log(userDevicetoken)
-            fetch('https://0d47-103-181-227-231.ngrok.io/send-noti',{
+            fetch('https://90be-2400-1a00-b040-ba74-2df7-ebda-95b5-94.ngrok.io/send-noti',{
                 method:'post',
                 headers:{
                     'Content-Type': 'application/json'
