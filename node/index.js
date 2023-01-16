@@ -18,10 +18,10 @@ app.post('/send-noti', (req, res) => {
             title:"New Add",
             body:"new add click to open"
         },
-        tokens:req.body.tokens
+        token: req.body.token
     }
     
-    admin.messaging().sendMulticast(message).then(res=>{
+    admin.messaging().send(message).then(res=>{
         console.log("send success");
     }).catch(err=>{
         console.log(err)

@@ -2,16 +2,28 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 
-export default function DriverDetail({ driver_name, car_num, distance, availableSeat, deleteItem, index, navigation }){
+export default function DriverDetail({ name, num, distance, availableSeat, deleteItem, index, navigation, token }){
     const dispatch = useDispatch();
+
+    const sendNoti = ()=>{
+        fetch('https://a3ac-110-44-116-42.ngrok.io/send-noti',{
+                method:'post',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    token: token
+                })
+            })
+    }
 
     return(
         <View style={styles.cardStyle}>
             <View style={styles.container}>
                 <Image style={styles.imageStyle} source={require('../../assets/Car2.jpg')} />
                 <View style={{justifyContent: 'center'}}>
-                    <Text>Name: {driver_name}</Text>
-                    <Text>Car Plate: {car_num}</Text>
+                    <Text>Name: {name}</Text>
+                    <Text>Car Plate: {num}</Text>
                     <Text>Distance: {distance} Km</Text>
                     <Text>Available Seats: {availableSeat}</Text>
                 </View>
@@ -21,14 +33,15 @@ export default function DriverDetail({ driver_name, car_num, distance, available
                     style={styles.button}
                     onPress={() => {
                         dispatch({type: 'info', payload: {
-                            name: driver_name,
-                            car_num: car_num
+                            name: name,
+                            car_num: num
                         }})
                         navigation.navigate('Accept')
+                        sendNoti();
                     }}
 
                 >
-                    <Text style={styles.buttonText}>ACCEPT</Text>
+                    <Text style={styles.buttonText}>REQUEST</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 

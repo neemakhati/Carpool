@@ -3,6 +3,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, Circle} from 'react-native-maps';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Dimensions} from 'react-native';
 import * as Location from 'expo-location';
+import { useSelector } from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width/height;
@@ -10,6 +12,7 @@ const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const HomeScreen = () => {
+    const uid = useSelector(state => state.uid);
    
     const [location, setLocation] = useState(null);
     useEffect(() => {
@@ -28,12 +31,23 @@ const HomeScreen = () => {
             longitudeDelta: LONGITUDE_DELTA
           })
         })();
+
+
       }, [])
 
       if (!location) {
         return null;
       }
       
+       firestore()
+        .collection('car_db')
+        .doc(uid)
+        .update({
+            location: {
+              latitude: location.latitude,
+              longitude: location.longitude
+            }
+        });
     
       return (
         <View style={styles.container}>

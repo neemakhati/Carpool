@@ -28,7 +28,7 @@
       ],
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBSePaY3qzjJs0OewXv5KE_OmmSGfpt_nk"
+          "apiKey": "AIzaSyCWCzFY6pMyz1BqW_W1EX9v8L2KO2NAjyk"
         }
       },
       "googleServicesFile": "./google-services.json",

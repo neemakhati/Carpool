@@ -4,8 +4,11 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { useDispatch } from 'react-redux';
 
 const LoginScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,9 +20,10 @@ const LoginScreen = ({ navigation }) => {
                 console.log(`Logged in with: ${user.email}`);
 
                 const uid = user.uid;
+
+                dispatch({type: 'uid', payload: uid});
                   (async () => {
                     const querySnapshot = await firestore().collection('users').doc(uid).get();
-                      console.log(querySnapshot);
                         if (querySnapshot.exists) {
                             messaging().getToken().then(token => {  
                                     firestore()

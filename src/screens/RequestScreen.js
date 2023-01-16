@@ -22,14 +22,15 @@ export default function RequestScreen({navigation}){
             const carSnapshot = await firestore().collection('car_db').get();
             carSnapshot.forEach(car => {
                 myArrary.push({
-                    availableSeat: car.data().car_seat,
+                    availableSeat: car.data().seats,
                     location: {
-                        lat2: car.data().driver_latitude,
-                        lon2: car.data().driver_longitude
+                        lat2: car.data().location.latitude,
+                        lon2: car.data().location.longitude
                     },
-                    driver_name: car.data().driver_name,
-                    car_num: car.data().car_num,
-                    distance: 0
+                    name: car.data().name,
+                    num: car.data().num,
+                    token: car.data().token,
+                    distance: 0,
                 });
             });
             return myArrary;
@@ -45,7 +46,6 @@ export default function RequestScreen({navigation}){
                         }
                     }, 3);
                 setData(nearestNeighbors);
-                console.log(nearestNeighbors);
             })
     }, []);
 
@@ -60,17 +60,18 @@ export default function RequestScreen({navigation}){
         <View style={styles.container}>
             <FlatList
                 data={data}
-                keyExtractor={item => item.car_num}
+                keyExtractor={item => item.num}
                 renderItem={({item, index}) => {
                     return (
                         <DriverDetail 
-                            driver_name={item.driver_name}
-                            car_num = {item.car_num}
+                            name={item.name}
+                            num = {item.num}
                             distance = {item.distance}
                             availableSeat = {item.availableSeat}
                             deleteItem = {deleteItem}
                             index={index}
                             navigation={navigation}
+                            token={item.token}
                         />
                     )
                 }}

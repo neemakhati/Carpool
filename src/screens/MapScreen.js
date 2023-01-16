@@ -95,23 +95,6 @@ const MapScreen = ({navigation}) => {
         left:edgePaddingValue,
     };
 
-    const sendNoti = ()=>{
-        firestore().collection('users').get().then(querySnap=>{
-            const userDevicetoken = querySnap.docs.map(docSnap=>{
-                return docSnap.data().token
-            })
-            console.log(userDevicetoken)
-            fetch('https://90be-2400-1a00-b040-ba74-2df7-ebda-95b5-94.ngrok.io/send-noti',{
-                method:'post',
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                body:JSON.stringify({
-                    tokens: userDevicetoken
-                })
-            })
-        })
-    }
     const traceRouteOnReady=(args)=>{
         if(args){
             setDistance(args.distance);
@@ -210,7 +193,6 @@ const MapScreen = ({navigation}) => {
                             dispatch({type: 'location', payload: location});
                         }
                         navigation.navigate('Request');
-                        sendNoti()
                     }}
                 >
                     

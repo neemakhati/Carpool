@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect } from 'react';
+import {useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
@@ -17,6 +17,8 @@ import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 import SignUpDriver from './src/screens/SignUpDriver';
+// import NotificationScreen from './src/screens/NotificationScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -42,6 +44,8 @@ const StackNavigator = () => {
 }
 
 export default function App() {
+  // const [showNotification, setShowNotification] = useState(false);
+
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -54,14 +58,7 @@ export default function App() {
   }
 
   useEffect(()=>{
-    if (requestUserPermission()){
-      messaging().getToken().then(token=>{
-        console.log(token);
-      });
-    }
-    else {
-      console.log("Failed token status");
-    }
+
     // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
@@ -95,6 +92,7 @@ export default function App() {
 
     
   },[])
+
   return (
     <Provider store={store}>
       <NavigationContainer>
