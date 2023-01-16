@@ -33,6 +33,7 @@ const LoginScreen = ({ navigation }) => {
                                             token: token
                                         })
                                   }); 
+                                  dispatch({type: 'name', payload: querySnapshot.data().name});
                             navigation.navigate('Map');
                         } else {
                             messaging().getToken().then(token => {  

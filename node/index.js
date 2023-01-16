@@ -14,9 +14,10 @@ admin.initializeApp({
 
 app.post('/send-noti', (req, res) => {
     const message={
-        notification:{
-            title:"New Add",
-            body:"new add click to open"
+        data:{
+            name: req.body.name,
+            origin: req.body.origin,
+            destination: req.body.destination
         },
         token: req.body.token
     }

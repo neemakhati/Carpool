@@ -1,9 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function DriverDetail({ name, num, distance, availableSeat, deleteItem, index, navigation, token }){
+const DriverDetail = ({ name, num, distance, availableSeat, deleteItem, index, navigation, token }) => {
     const dispatch = useDispatch();
+    const origin = useSelector(state => state.origin);
+    const myName = useSelector(state => state.name);
+    const destination = useSelector(state => state.destination);
 
     const sendNoti = ()=>{
         fetch('https://a3ac-110-44-116-42.ngrok.io/send-noti',{
@@ -12,6 +15,9 @@ export default function DriverDetail({ name, num, distance, availableSeat, delet
                     'Content-Type': 'application/json'
                 },
                 body:JSON.stringify({
+                    name: myName,
+                    origin: origin,
+                    destination: destination,
                     token: token
                 })
             })
@@ -87,3 +93,5 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
 })
+
+export default DriverDetail;

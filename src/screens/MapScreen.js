@@ -25,6 +25,8 @@ function InputAutocomplete({
     placeholder,
     onPlaceSelected,
 }:InputAutocompleteProps) {
+    const dispatch = useDispatch();
+
     return(
         <>
             <Text>{label}</Text>
@@ -33,6 +35,12 @@ function InputAutocomplete({
                     placeholder={placeholder||""}
                     fetchDetails
                     onPress={(data, details = null) => {
+                        if (label == 'Origin') {
+                            dispatch({type: 'origin', payload: data.description});
+                        }
+                        else if (label == 'Destination') {
+                            dispatch({type: 'destination', payload: data.description});
+                        } 
                         onPlaceSelected(details);
                     }}
                     query={{
