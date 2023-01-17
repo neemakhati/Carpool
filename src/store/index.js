@@ -16,6 +16,8 @@ const reducerFn = (state = { location: null, requiredSeat: null}, action) => {
             return {...state, destination: action.payload}
         case 'name':
             return {...state, name: action.payload}
+        case 'phone':
+            return {...state, phone: action.payload}
     }
     return state;
 }

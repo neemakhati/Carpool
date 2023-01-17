@@ -6,16 +6,18 @@ const DriverDetail = ({ name, num, distance, availableSeat, deleteItem, index, n
     const dispatch = useDispatch();
     const origin = useSelector(state => state.origin);
     const myName = useSelector(state => state.name);
+    const myPhone = useSelector(state => state.phone);
     const destination = useSelector(state => state.destination);
 
     const sendNoti = ()=>{
-        fetch('https://a3ac-110-44-116-42.ngrok.io/send-noti',{
+        fetch('https://61c8-110-44-116-42.ngrok.io/send-noti',{
                 method:'post',
                 headers:{
                     'Content-Type': 'application/json'
                 },
                 body:JSON.stringify({
                     name: myName,
+                    phone: myPhone,
                     origin: origin,
                     destination: destination,
                     token: token

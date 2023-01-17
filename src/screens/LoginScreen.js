@@ -34,6 +34,8 @@ const LoginScreen = ({ navigation }) => {
                                         })
                                   }); 
                                   dispatch({type: 'name', payload: querySnapshot.data().name});
+                                  dispatch({type: 'phone', payload: querySnapshot.data().phone});
+
                             navigation.navigate('Map');
                         } else {
                             messaging().getToken().then(token => {  

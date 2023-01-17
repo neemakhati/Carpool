@@ -46,6 +46,12 @@ const StackNavigator = () => {
 export default function App() {
   const [showNotification, setShowNotification] = useState(false);
 
+  const [message, setMessage] = useState(null);
+
+  const handleNotification = () => {
+    setShowNotification(val => !val);
+  }
+
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -85,9 +91,8 @@ export default function App() {
     });
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      // setShowNotification(true);
-
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      setMessage(remoteMessage);
+      setShowNotification(true);
     });
 
     return unsubscribe;
@@ -99,7 +104,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <StackNavigator />
-        { showNotification && <NotificationScreen/> }
+        { showNotification && <NotificationScreen handleNotification={handleNotification} remoteMessage = {message}/> }
       </NavigationContainer>
     </Provider>
   )

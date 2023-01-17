@@ -17,7 +17,8 @@ app.post('/send-noti', (req, res) => {
         data:{
             name: req.body.name,
             origin: req.body.origin,
-            destination: req.body.destination
+            destination: req.body.destination,
+            phone: req.body.phone
         },
         token: req.body.token
     }
