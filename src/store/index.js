@@ -18,6 +18,8 @@ const reducerFn = (state = { location: null, requiredSeat: null}, action) => {
             return {...state, name: action.payload}
         case 'phone':
             return {...state, phone: action.payload}
+        case 'token':
+        return {...state, token: action.payload}
     }
     return state;
 }

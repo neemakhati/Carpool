@@ -1,50 +1,69 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const NotificationScreen = ({handleNotification, remoteMessage}) => {
 
     const [visible, setVisible] = useState(false);
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <Image
-          source={require('../../assets/avatar.png')}
-          style={styles.avatar}
-        />
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.name}>{remoteMessage.data.name}</Text>
-        <Text style={styles.rating}><Text style={{color: 'black'}}>From: </Text>{remoteMessage.data.origin}</Text>
-        <Text style={styles.rating}><Text style={{color: 'black'}}>To: </Text> {remoteMessage.data.destination}</Text>
-        {visible && <Text style={styles.rating}><Text style={{color: 'black'}}>Phone: </Text> {remoteMessage.data.phone}</Text>}
-        {visible && <Text style={{fontSize: 18,
-    color: 'black',
-    marginVertical: 20, alignSelf: 'center'}}>Have a safe journey!</Text>}
-      </View>
+    const twoWayNoti = () =>{
+        fetch('https://18af-110-44-116-42.ngrok.io/two-way-noti',{
+                method:'post',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    name: remoteMessage.data.dName,
+                    num: remoteMessage.data.dNum,
+                    phone: remoteMessage.data.dPhone,
+                    token: remoteMessage.data.pToken
+                })
+            })
+    }
 
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '70%'}}>
-                {!visible && 
+    return (
+        <View style={styles.container}>
+        <View style={styles.avatarContainer}>
+            <Image
+            source={require('../../assets/avatar.png')}
+            style={styles.avatar}
+            />
+        </View>
+        <View style={styles.textContainer}>
+            <Text style={styles.name}>{remoteMessage.data.name}</Text>
+            <Text style={styles.rating}><Text style={{color: 'black'}}>From: </Text>{remoteMessage.data.origin}</Text>
+            <Text style={styles.rating}><Text style={{color: 'black'}}>To: </Text> {remoteMessage.data.destination}</Text>
+            {visible && <Text style={styles.rating}><Text style={{color: 'black'}}>Phone: </Text> {remoteMessage.data.phone}</Text>}
+            {visible && <Text style={{fontSize: 18,
+        color: 'black',
+        marginVertical: 20, alignSelf: 'center'}}>Have a safe journey!</Text>}
+        </View>
+
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '70%'}}>
+                    {!visible && 
+                        <TouchableOpacity 
+                            style={styles.button}
+                            onPress={() => {
+                                twoWayNoti();
+                                setVisible(true);
+                            }}
+                        >
+                            <Text style={styles.buttonText}>ACCEPT</Text>
+                        </TouchableOpacity>
+                    }
+                    
+                    {!visible && 
                     <TouchableOpacity 
-                        style={styles.button}
-                        onPress={() => setVisible(true)}
-                    >
-                        <Text style={styles.buttonText}>ACCEPT</Text>
-                    </TouchableOpacity>
-                }
-                
-                {!visible && 
-                   <TouchableOpacity 
-                        style={{color: 'white', backgroundColor: 'rgb(227, 57, 62)', borderRadius: 17,
-                        padding: 7, width: '35%', marginVertical: 20}}
-                        onPress={() => handleNotification()}
-                    >
-                        <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center', fontSize: 15,}}>REJECT</Text>
-                    </TouchableOpacity> 
-                }
+                            style={{color: 'white', backgroundColor: 'rgb(227, 57, 62)', borderRadius: 17,
+                            padding: 7, width: '35%', marginVertical: 20}}
+                            onPress={() => handleNotification()}
+                        >
+                            <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center', fontSize: 15,}}>REJECT</Text>
+                        </TouchableOpacity> 
+                    }
 
-            </View>
-    </View>
+                </View>
+        </View>
   );
 };
 

@@ -18,6 +18,27 @@ app.post('/send-noti', (req, res) => {
             name: req.body.name,
             origin: req.body.origin,
             destination: req.body.destination,
+            phone: req.body.phone,
+            dName: req.body.dName,
+            dPhone: req.body.dPhone,
+            dNum: req.body.dNum,
+            pToken: req.body.pToken
+        },
+        token: req.body.dToken
+    }
+    
+    admin.messaging().send(message).then(res=>{
+        console.log("send success");
+    }).catch(err=>{
+        console.log(err)
+    })
+})
+
+app.post('/two-way-noti', (req, res) => {
+    const message={
+        data:{
+            name: req.body.name,
+            num: req.body.num,
             phone: req.body.phone
         },
         token: req.body.token

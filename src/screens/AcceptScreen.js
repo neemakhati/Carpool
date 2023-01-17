@@ -7,19 +7,7 @@ const AcceptScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <Image
-          source={require('../../assets/avatar.png')}
-          style={styles.avatar}
-        />
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.name}>{info.name}</Text>
-        <Text style={styles.rating}>Car No. {info.car_num}</Text>
-      </View>
-      <View style={styles.bioContainer}>
-      </View>
-      <Text style={{fontSize: 20}}>Have a safe journey</Text>
+      <Text>Waiting for the Driver's response</Text>
     </View>
   );
 };
@@ -32,27 +20,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  avatarContainer: {
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  textContainer: {
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  rating: {
-    fontSize: 18,
-    color: 'gray',
-  }
-  
 });
 
 export default AcceptScreen;

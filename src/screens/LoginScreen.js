@@ -32,6 +32,8 @@ const LoginScreen = ({ navigation }) => {
                                         .update({
                                             token: token
                                         })
+                                        
+                                        dispatch({type: 'token', payload: querySnapshot.data().token});
                                   }); 
                                   dispatch({type: 'name', payload: querySnapshot.data().name});
                                   dispatch({type: 'phone', payload: querySnapshot.data().phone});

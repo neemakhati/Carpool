@@ -2,15 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-const DriverDetail = ({ name, num, distance, availableSeat, deleteItem, index, navigation, token }) => {
+const DriverDetail = ({ name, num, distance, availableSeat, deleteItem, index, navigation, token, phone }) => {
     const dispatch = useDispatch();
+    const pToken = useSelector(state => state.token);
     const origin = useSelector(state => state.origin);
     const myName = useSelector(state => state.name);
     const myPhone = useSelector(state => state.phone);
     const destination = useSelector(state => state.destination);
 
     const sendNoti = ()=>{
-        fetch('https://61c8-110-44-116-42.ngrok.io/send-noti',{
+        fetch('https://18af-110-44-116-42.ngrok.io/send-noti',{
                 method:'post',
                 headers:{
                     'Content-Type': 'application/json'
@@ -20,7 +21,11 @@ const DriverDetail = ({ name, num, distance, availableSeat, deleteItem, index, n
                     phone: myPhone,
                     origin: origin,
                     destination: destination,
-                    token: token
+                    dToken: token,
+                    dName: name,
+                    dPhone: phone,
+                    dNum: num,
+                    pToken: pToken
                 })
             })
     }
@@ -42,7 +47,8 @@ const DriverDetail = ({ name, num, distance, availableSeat, deleteItem, index, n
                     onPress={() => {
                         dispatch({type: 'info', payload: {
                             name: name,
-                            car_num: num
+                            car_num: num,
+                            phone: phone
                         }})
                         navigation.navigate('Accept')
                         sendNoti();

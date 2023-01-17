@@ -29,6 +29,7 @@ export default function RequestScreen({navigation}){
                     },
                     name: car.data().name,
                     num: car.data().num,
+                    phone: car.data().phone,
                     token: car.data().token,
                     distance: 0,
                 });
@@ -72,6 +73,7 @@ export default function RequestScreen({navigation}){
                             index={index}
                             navigation={navigation}
                             token={item.token}
+                            phone={item.phone}
                         />
                     )
                 }}

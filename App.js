@@ -18,6 +18,7 @@ import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 import SignUpDriver from './src/screens/SignUpDriver';
 import NotificationScreen from './src/screens/NotificationScreen';
+import DriverScreen from './src/screens/DriverScreen';
 
 
 const Stack = createStackNavigator();
@@ -45,8 +46,10 @@ const StackNavigator = () => {
 
 export default function App() {
   const [showNotification, setShowNotification] = useState(false);
-
   const [message, setMessage] = useState(null);
+  
+  const [showDriver, setShowDriver] = useState(false);
+  const [driver, setDriver] = useState(null);
 
   const handleNotification = () => {
     setShowNotification(val => !val);
@@ -91,8 +94,14 @@ export default function App() {
     });
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      setMessage(remoteMessage);
-      setShowNotification(true);
+
+      if (remoteMessage.data.pToken) {
+        setMessage(remoteMessage);
+        setShowNotification(true);
+      } else {
+        setDriver(remoteMessage);
+        setShowDriver(true);
+      }
     });
 
     return unsubscribe;
@@ -105,6 +114,7 @@ export default function App() {
       <NavigationContainer>
         <StackNavigator />
         { showNotification && <NotificationScreen handleNotification={handleNotification} remoteMessage = {message}/> }
+        { showDriver && <DriverScreen remoteMessage = {driver}/> }
       </NavigationContainer>
     </Provider>
   )
